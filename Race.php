@@ -1,5 +1,7 @@
 <!--  créer une partie-un joueur-un véhicule -->
 <?php 
+
+require 'Player.php';
 class Race{
     private $track;
     private $type;
@@ -9,8 +11,24 @@ class Race{
     private $players = array();
     private $ranking = array();
 
-    public function addPlayer( $player ){
+    public function __construct($track, $type, $distance, $weather, $lap = null){
+        $this->track = $track;
+        $this->type = $type; 
+        $this->weather = $weather;
 
+        if ( is_int ($distance) && $distance > 100) {
+            $this->distance = $distance;   
+        }else {
+            $this->distance = 100;
+        }
+       
+        if( is_int( $lap ) && $lap > 0) {
+            $this->lap = $lap;
+        }
+    }
+
+    public function addPlayer( $player ){
+        $this->players[] = $player;
     }
     
     public function start() {
@@ -18,6 +36,8 @@ class Race{
     }
 
     public function getRanking() {
-        
+        return $this->ranking;
     }
 }
+
+$race = new Race($player1 , $player2);

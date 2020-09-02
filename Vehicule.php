@@ -2,30 +2,56 @@
 class Vehicule{
     private $model;
     private $power;
+    private $engine = false;
     private $state = 100;
     private $speed = 0;
 
+    public function __construct($model, $power){
+        $this->model = $model;
+        $this->power = $power;
+    }
+
     public function start(){
-
+        $this->engine = true;  
     }
+
     public function increaseSpeed(){
-
+        $this->speed += $this->power;
+        if ($this->speed <= 350 ) {
+            $this->speed = 350;
+        }
+        return $this->speed;
     }
+
     public function decreaseSpeed(){
-
+        $this->speed -= $this->power;
+        if( $this->speed < 0 ){
+            $this->speed = 0;
+        }
+        return $this->speed;
     }
-    public function setDamage(){
 
-    }
     public function setDamage( $damage ){
+        $this->state -= $damage;
 
+        if( $this->state <= 0 ){
+            $this->state = 0;
+            return false;
+        }
+
+        return true;
     }
+
     public function repair(){
-        
+        $this->state = 100;
     }
 
     public function stop(){
-
+        $this->engine = false;
     }
 
 }
+
+$car1 = new Vehicule();
+
+$car2 = new Vehicule();
