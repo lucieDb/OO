@@ -1,7 +1,6 @@
 <!--  créer une partie-un joueur-un véhicule -->
 <?php 
 
-require 'Player.php';
 class Race{
     private $track;
     private $type;
@@ -32,12 +31,31 @@ class Race{
     }
     
     public function start() {
-        
+        for($i=0; $i<$this->lap; $i++){
+            $this->simulateLap();
+        }
     }
 
     public function getRanking() {
         return $this->ranking;
     }
-}
 
-$race = new Race($player1 , $player2);
+    private function simulateLap(){
+        foreach($this->players as $player){
+            $speed = $player->drive();
+            $thd = $speed / 10;
+            $key = round ($this->distance / $thd);
+
+            $rankKey = array_search($player, $this->ranking);
+            if($rankKey){
+                unset($this->ranking[ $rankKey]);
+                $total = $rankKey + $key;
+                $this->ranking[$total]= $player;
+            }else{
+                $this->ranking[$key] = $player;
+            }
+            var_dump($this->ranking);
+        }
+    }
+
+}

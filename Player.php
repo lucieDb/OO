@@ -1,7 +1,5 @@
 <?php
 
-require 'Vehicule.php';
-
 class Player{
     private $username;
     private $team;
@@ -21,11 +19,34 @@ class Player{
         $this->care = mt_rand( 0, 5 );
     }
 
+    public function drive(){
+        if($this->vehicule->isStart()){
+            $performance = $this->estimatePerformance();
+
+            if($performance < 30) {
+                $this->vehicule->decreaseSpeed();
+            }else if($performance > 70) {
+                $this->vehicule->increaseSpeed();
+            }
+        } else {
+            $this->vehicule->start();
+            $this->vehicule->increaseSpeed();
+        }
+        return $this->vehicule->getSpeed();
+    }
+
     public function getIdentity(){
         return $this->username.'-'.$this->team;
     }
+
+    private function estimatePerformance(){
+
+        $limit = 100;
+        $limit -= $this->care * 2;
+
+        $performance = mt_rand(0, $limit);
+        $performance += round( $this->level / 10 );
+
+        return $performance;
+    }
 }
-
-$player1 = new Player( $car1 );
-
-$player2 = new Player( $car2 );
